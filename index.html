@@ -71,9 +71,9 @@ function showNotifications(message) {
     if (result === 'granted') {
       navigator.serviceWorker.ready.then(function(registration) {
         registration.showNotification('Vaccine Slot Updates', {
-          body: 'Requires interaction',
+          body: message,
           icon: '../images/touch/chrome-touch-icon-192x192.png',
-          requireInteraction: true,
+          requireInteraction: false,
           tag: 'require-interaction'
         });
       });
@@ -144,7 +144,7 @@ var intervalId = window.setInterval(function(){
             if(isAdd){	
                    if($scope.selectedAge=="0"||item.age==$scope.selectedAge){
                      $scope.allData.push(item);
-                     if(item.vaccine!="COVISHIELD"){
+                     if(item.vaccine!="COVISHIELD" ||true){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
 						 showNotifications("Vaccine Change "+item.vaccine);
 					 }
