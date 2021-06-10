@@ -71,9 +71,9 @@ function showNotifications(message) {
     if (result === 'granted') {
       navigator.serviceWorker.ready.then(function(registration) {
         registration.showNotification('Vaccine Slot Updates', {
-          body: message,
+          body: 'Requires interaction',
           icon: '../images/touch/chrome-touch-icon-192x192.png',
-          requireInteraction: false,
+          requireInteraction: true,
           tag: 'require-interaction'
         });
       });
