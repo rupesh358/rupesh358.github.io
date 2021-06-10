@@ -30,10 +30,12 @@
 <button ng-click="refresh()">Search</button> <br>  <br>
 Number of Slot <input type="text" ng-model="alertSlot"></input>
 Require Date<input type="text" ng-model="alertDate"></input>
+ <button ng-click="hiddentCenter = [];refresh()">x</button>
 <toaster-container></toaster-container>
     <table border=1>
         <thead>
             <tr>
+				<th>Hide</th>
 				<th><a ng-click="orderByField='age'; reverseSort = !reverseSort">Age</a></th>
 				<th><a ng-click="orderByField='vaccine'; reverseSort = !reverseSort">Vaccine</a></th>
 				<th><a ng-click="orderByField='date'; reverseSort = !reverseSort">Date</a></th>
@@ -46,6 +48,7 @@ Require Date<input type="text" ng-model="alertDate"></input>
             </tr>
         </thead>
         <tr ng-repeat="item in allData|orderBy:orderByField:reverseSort">
+			<td> <button ng-click="hiddentCenter.push(item.centerId+item.date);refresh()">x</button>  </td>
             <td> {{item.age}} </td>
             <td> {{item.vaccine}} </td>
             <td> {{item.date}} </td>
@@ -83,7 +86,7 @@ function showNotifications(title,message,vaccineId) {
   });
 }
 
-
+	$scope.hiddentCenter = [];
 	$scope.selectedAge = "0";
     $scope.orderByField = 'age';
     $scope.reverseSort = false;
@@ -131,7 +134,7 @@ var intervalId = window.setInterval(function(){
             var item = {};
             for (var j = 0; j < sessions.length; j++) {
                 var session = sessions[j];
-                if (session.available_capacity_dose1 > 0) {
+                if (session.available_capacity_dose1 > 0 && !$scope.hiddentCenter.includes(currentData.center_id+session.date)) {
 					isAdd=true;
 					 item.age = session.min_age_limit;
                     item.vaccine = session.vaccine;
