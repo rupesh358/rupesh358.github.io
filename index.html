@@ -126,9 +126,11 @@ var intervalId = window.setInterval(function(){
                      $scope.allData.push(item);
                      if(item.vaccine!="COVISHIELD"){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
+						 notify("Vaccine Change "+item.vaccine);
 					 }
 					 if(item.dose1>1 && item.age==18){
 						 toaster.pop('sucess', "Many Slots", item.dose1);
+						 notify("Many Slots"+item.dose1);
 					 }
 				 }
 				}
@@ -138,15 +140,15 @@ var intervalId = window.setInterval(function(){
 
     }
     
-notify();
-function notify(){
+
+function notify(mssage){
 	
 	(async () => {
     // create and show the notification
     const showNotification = () => {
         // create a new notification
-        const notification = new Notification('JavaScript Notification API', {
-            body: 'This is a JavaScript Notification API demo',
+        const notification = new Notification('Slots Open', {
+            body: mssage,
             icon: './img/js.png'
         });
 
