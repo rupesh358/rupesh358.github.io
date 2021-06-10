@@ -61,6 +61,33 @@
 <script>
 var app = angular.module('myApp', ['toaster']);
 app.controller('myCtrl', function($scope, $http,toaster) {
+	
+	
+	
+	navigator.serviceWorker.register('sw.js');
+
+function showNotifications() {
+  Notification.requestPermission(function(result) {
+    if (result === 'granted') {
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.showNotification('requireInteraction: true', {
+          body: 'Requires interaction',
+          icon: '../images/touch/chrome-touch-icon-192x192.png',
+          requireInteraction: true,
+          tag: 'require-interaction'
+        });
+
+        registration.showNotification('requireInteraction: false', {
+          body: 'Does not require interaction',
+          icon: '../images/touch/chrome-touch-icon-192x192.png',
+          requireInteraction: false,
+          tag: 'no-require-interaction'
+        });
+      });
+    }
+  });
+}
+
 
 	$scope.selectedAge = "0";
     $scope.orderByField = 'age';
@@ -69,6 +96,7 @@ app.controller('myCtrl', function($scope, $http,toaster) {
     $scope.allData = [];
 
     $scope.refresh = function() {
+		showNotifications();
 		var date=new Date().getDate();
 		date = date-1;
 		$scope.myWelcome = [];
