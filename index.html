@@ -71,15 +71,15 @@ app.controller('myCtrl', function($scope, $http,toaster) {
 	
 	navigator.serviceWorker.register('sw.js');
 
-function showNotifications(title,message,vaccineId) {
+function showNotifications(title,message,vaccineId,date) {
   Notification.requestPermission(function(result) {
     if (result === 'granted') {
       navigator.serviceWorker.ready.then(function(registration) {
         registration.showNotification(title, {
-          body: message,
+          body: date+" "+message,
           icon: '../images/touch/chrome-touch-icon-192x192.png',
           requireInteraction: false,
-          tag: title+vaccineId
+          tag: title+vaccineId+date
         });
       });
     }
@@ -157,12 +157,12 @@ var intervalId = window.setInterval(function(){
                      if(item.vaccine!="COVISHIELD"){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
 						 var msgText = item.vaccine+" "+item.pincode+" "+item.name+" "+item.dose1;
-						 showNotifications("Vaccine Change",msgText,item.centerId);
+						 showNotifications("Vaccine Change",msgText,item.centerId,item.date);
 					 }
 					 if(item.dose1>$scope.alertSlot && item.age==18 && currentDateInt>=$scope.alertDate){
 						 toaster.pop('sucess', "Many Slots ", item.dose1);
 						  var msgText = item.pincode+" "+item.name+" "+item.dose1;
-						 showNotifications("Many Slots",msgText,item.centerId);
+						 showNotifications("Many Slots",msgText,item.centerId,item.date);
 					 }
 				 }
 				}
