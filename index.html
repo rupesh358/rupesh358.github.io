@@ -27,7 +27,9 @@
   <option value="45">45</option>
 </select>
 
-<button ng-click="refresh()">Search</button>
+<button ng-click="refresh()">Search</button> <br>  <br>
+Number of Slot <input type="text" ng-model="alertSlot"></input>
+Require Date<input type="text" ng-model="alertDate"></input>
 <toaster-container></toaster-container>
     <table border=1>
         <thead>
@@ -87,6 +89,8 @@ function showNotifications(message) {
     $scope.reverseSort = false;
     $scope.cityName = "363";
     $scope.allData = [];
+    $scope.alertDate = new Date().getDate();
+    $scope.alertSlot = 1;
 
     $scope.refresh = function() {
 		var date=new Date().getDate();
@@ -142,13 +146,15 @@ var intervalId = window.setInterval(function(){
                 }
             }
             if(isAdd){	
+				
+					var currentDateInt = item.date.split("-")[0];
                    if($scope.selectedAge=="0"||item.age==$scope.selectedAge){
                      $scope.allData.push(item);
-                     if(item.vaccine!="COVISHIELD" ||true){
+                     if(item.vaccine!="COVISHIELD"){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
 						 showNotifications("Vaccine Change "+item.vaccine);
 					 }
-					 if(item.dose1>1 && item.age==18){
+					 if(item.dose1>$scope.alertSlot && item.age==18 && currentDateInt>=$scope.alertDate){
 						 toaster.pop('sucess', "Many Slots ", item.dose1);
 						 showNotifications("Many Slots "+item.dose1);
 					 }
