@@ -129,8 +129,8 @@ var intervalId = window.setInterval(function(){
 						 notify("Vaccine Change "+item.vaccine);
 					 }
 					 if(item.dose1>1 && item.age==18){
-						 toaster.pop('sucess', "Many Slots", item.dose1);
-						 notify("Many Slots"+item.dose1);
+						 toaster.pop('sucess', "Many Slots ", item.dose1);
+						 notify("Many Slots "+item.dose1);
 					 }
 				 }
 				}
@@ -160,7 +160,7 @@ function notify(mssage){
         // navigate to a URL when clicked
         notification.addEventListener('click', () => {
 
-            window.open('https://www.javascripttutorial.net/web-apis/javascript-notification/', '_blank');
+            window.open('https://selfregistration.cowin.gov.in/', '_blank');
         });
     }
 
