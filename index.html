@@ -1,147 +1,32 @@
 <!DOCTYPE html>
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
- <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/3.0.0/toaster.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/3.0.0/toaster.min.css" rel="stylesheet" />
-  <head>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Notification API</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-64856799-4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-64856799-4');
+    </script>
+
 </head>
+
 <body>
 
-<div ng-app="myApp" ng-controller="myCtrl"> 
+    <div class="container">
+        <h1>JavaScript Notification API Demo</h1>
+        <div class="error"></div>
+    </div>
 
-
-
-<h1><a href="https://selfregistration.cowin.gov.in/" target="_blank" >Cowin</a></h1>
-<h1>Slots  9960095887</h1>
-<select ng-model="cityName" name="City" id="cars">
-  <option value="363">Pune</option>
-  <option value="382">Nanded</option>
-  <option value="366">Amaravati</option>
-</select>
-<select ng-model="selectedAge" name="Age" id="carsa">
-  <option value="0">All</option>
-  <option value="18">18</option>
-  <option value="45">45</option>
-</select>
-
-<button ng-click="refresh()">Search</button>
-<toaster-container></toaster-container>
-    <table border=1>
-        <thead>
-            <tr>
-				<th><a ng-click="orderByField='age'; reverseSort = !reverseSort">Age</a></th>
-				<th><a ng-click="orderByField='vaccine'; reverseSort = !reverseSort">Vaccine</a></th>
-				<th><a ng-click="orderByField='date'; reverseSort = !reverseSort">Date</a></th>
-				<th><a ng-click="orderByField='pincode'; reverseSort = !reverseSort">Pincode</a></th>
-				<th><a ng-click="orderByField='price'; reverseSort = !reverseSort">Price</a></th>
-				<th><a ng-click="orderByField='dose1'; reverseSort = !reverseSort">Dose 1</a></th>
-                <th><a ng-click="orderByField='name'; reverseSort = !reverseSort">Center Name</a></th>
-                <th><a ng-click="orderByField='address'; reverseSort = !reverseSort">Address</a></a></th>
-
-            </tr>
-        </thead>
-        <tr ng-repeat="item in allData|orderBy:orderByField:reverseSort">
-            <td> {{item.age}} </td>
-            <td> {{item.vaccine}} </td>
-            <td> {{item.date}} </td>
-            <td> {{item.pincode}} </td>
-            <td> {{item.price}} </td>
-            <td> {{item.dose1}} </td>
-            <td> {{item.name}} </td>
-            <td> {{item.address}} </td>
-        </tr>
-    </table>
-
-</div>
-
-
-<script>
-var app = angular.module('myApp', ['toaster']);
-app.controller('myCtrl', function($scope, $http,toaster) {
-
-	$scope.selectedAge = "0";
-    $scope.orderByField = 'age';
-    $scope.reverseSort = false;
-    $scope.cityName = "363";
-    $scope.allData = [];
-
-    $scope.refresh = function() {
-		var date=new Date().getDate();
-		date = date-1;
-		$scope.myWelcome = [];
-		$scope.allData = [];
-		var tempp=0;
-		for(var i=0;i<10;i++){
-			date= date+1;
-			var dateAsString= "0"+date;
-			if(date>=10){
-				dateAsString=date;
-				}
-        $http.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+$scope.cityName+"&date="+dateAsString+"-06-2021")
-            .then(function(response) {
-                $scope.myWelcome = $scope.myWelcome.concat(response.data.centers);
-                tempp++;
-                if(tempp==10){
-                proccess();
-			}
-            });
-		}
-    };
-
-var intervalId = window.setInterval(function(){
-  $scope.refresh();
-}, 7500);
-
-    $scope.refresh();
-
-    function proccess() {
-
-        var centerData = $scope.myWelcome;
-        for (var i = 0; i < centerData.length; i++) {
-            var currentData = centerData[i];
-            var sessions = currentData.sessions;
-            var isAdd=false;
-            var item = {};
-            for (var j = 0; j < sessions.length; j++) {
-                var session = sessions[j];
-                if (session.available_capacity_dose1 > 0) {
-					isAdd=true;
-					 item.age = session.min_age_limit;
-                    item.vaccine = session.vaccine;
-                    item.date = session.date;
-                    item.pincode = currentData.pincode;
-                    if (currentData.vaccine_fees != null) {
-                        item.price = currentData.vaccine_fees[0].fee;
-                    }
-                    item.dose1 = session.available_capacity_dose1;
-                    item.name = currentData.name;
-                    item.address = currentData.address;
-                }
-            }
-            if(isAdd){	
-                   if($scope.selectedAge=="0"||item.age==$scope.selectedAge){
-                     $scope.allData.push(item);
-                     if(item.vaccine!="COVISHIELD"){
-						 toaster.pop('error', "Vaccine Change", item.vaccine);
-					 }
-					 if(item.dose1>1 && item.age==18){
-						 toaster.pop('sucess', "Many Slots", item.dose1);
-					 }
-				 }
-				}
-
-        }
-	console.log( $scope.allData);
-
-    }
-    
-
-
-});
-</script>
+    <script src="js/app.js"></script>
 
 </body>
+
 </html>
