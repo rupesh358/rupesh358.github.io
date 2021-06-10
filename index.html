@@ -66,22 +66,15 @@ app.controller('myCtrl', function($scope, $http,toaster) {
 	
 	navigator.serviceWorker.register('sw.js');
 
-function showNotifications() {
+function showNotifications(message) {
   Notification.requestPermission(function(result) {
     if (result === 'granted') {
       navigator.serviceWorker.ready.then(function(registration) {
-        registration.showNotification('requireInteraction: true', {
-          body: 'Requires interaction',
-          icon: '../images/touch/chrome-touch-icon-192x192.png',
-          requireInteraction: true,
-          tag: 'require-interaction'
-        });
-
-        registration.showNotification('requireInteraction: false', {
-          body: 'Does not require interaction',
+        registration.showNotification('Vaccine Slot Updates', {
+          body: message,
           icon: '../images/touch/chrome-touch-icon-192x192.png',
           requireInteraction: false,
-          tag: 'no-require-interaction'
+          tag: 'require-interaction'
         });
       });
     }
@@ -96,7 +89,6 @@ function showNotifications() {
     $scope.allData = [];
 
     $scope.refresh = function() {
-		showNotifications();
 		var date=new Date().getDate();
 		date = date-1;
 		$scope.myWelcome = [];
@@ -154,11 +146,11 @@ var intervalId = window.setInterval(function(){
                      $scope.allData.push(item);
                      if(item.vaccine!="COVISHIELD"){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
-						 notify("Vaccine Change "+item.vaccine);
+						 showNotifications("Vaccine Change "+item.vaccine);
 					 }
 					 if(item.dose1>1 && item.age==18){
 						 toaster.pop('sucess', "Many Slots ", item.dose1);
-						 notify("Many Slots "+item.dose1);
+						 showNotifications("Many Slots "+item.dose1);
 					 }
 				 }
 				}
@@ -168,56 +160,6 @@ var intervalId = window.setInterval(function(){
 
     }
     
-
-function notify(mssage){
-	
-	(async () => {
-    // create and show the notification
-    const showNotification = () => {
-        // create a new notification
-        const notification = new Notification('Slots Open', {
-            body: mssage,
-            icon: './img/js.png'
-        });
-
-        // close the notification after 10 seconds
-        setTimeout(() => {
-            notification.close();
-        }, 10 * 10000);
-
-        // navigate to a URL when clicked
-        notification.addEventListener('click', () => {
-
-            window.open('https://selfregistration.cowin.gov.in/', '_blank');
-        });
-    }
-
-    // show an error message
-    const showError = () => {
-        const error = document.querySelector('.error');
-        error.style.display = 'block';
-        error.textContent = 'You blocked the notifications';
-    }
-
-    // check notification permission
-    let granted = false;
-
-    if (Notification.permission === 'granted') {
-        granted = true;
-    } else if (Notification.permission !== 'denied') {
-        let permission = await Notification.requestPermission();
-        granted = permission === 'granted' ? true : false;
-    }
-
-    // show notification or error
-    granted ? showNotification() : showError();
-
-})();
-	
-	}
-
-
-
 });
 </script>
 
