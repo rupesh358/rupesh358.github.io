@@ -15,7 +15,7 @@
 
 
 <h1><a href="https://selfregistration.cowin.gov.in/" target="_blank" >Cowin</a></h1>
-<h1>Slots  9960095887</h1>
+<h1>Slots  9960095887    Last Refresh At {{displyDate}}</h1>
 <select ng-model="cityName" name="City" id="cars">
   <option value="363">Pune</option>
   <option value="382">Nanded</option>
@@ -96,6 +96,7 @@ function showNotifications(title,message,vaccineId,date) {
     $scope.alertSlot = 1;
 
     $scope.refresh = function() {
+		$scope.displyDate = new Date();
 		var date=new Date().getDate();
 		date = date-1;
 		$scope.myWelcome = [];
