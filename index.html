@@ -96,7 +96,7 @@ function showNotifications(title,message,vaccineId,date) {
     $scope.alertSlot = 1;
 
     $scope.refresh = function() {
-		$scope.displyDate = new Date();
+		$scope.displyDate = new Date().toLocaleString("en-US", {timeZone: "Asia/Calcutta"});
 		var date=new Date().getDate();
 		date = date-1;
 		$scope.myWelcome = [];
