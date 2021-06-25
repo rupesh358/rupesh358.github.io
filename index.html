@@ -155,7 +155,7 @@ var intervalId = window.setInterval(function(){
 					var currentDateInt = item.date.split("-")[0];
                    if($scope.selectedAge=="0"||item.age==$scope.selectedAge){
                      $scope.allData.push(item);
-                     if(item.vaccine!="COVISHIELD"){
+                     if(item.vaccine!="COVISHIELD" && item.age==18){
 						 toaster.pop('error', "Vaccine Change", item.vaccine);
 						 var msgText = item.vaccine+" "+item.pincode+" "+item.name+" "+item.dose1;
 						 showNotifications("Vaccine Change",msgText,item.centerId,item.date);
