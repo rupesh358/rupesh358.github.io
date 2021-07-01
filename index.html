@@ -108,7 +108,7 @@ function showNotifications(title,message,vaccineId,date) {
 			if(date>=10){
 				dateAsString=date;
 				}
-        $http.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+$scope.cityName+"&date="+dateAsString+"-06-2021")
+        $http.get("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+$scope.cityName+"&date="+dateAsString+"-07-2021")
             .then(function(response) {
                 $scope.myWelcome = $scope.myWelcome.concat(response.data.centers);
                 tempp++;
