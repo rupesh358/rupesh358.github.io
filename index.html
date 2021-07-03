@@ -165,7 +165,7 @@ var intervalId = window.setInterval(function(){
 						  var msgText = item.pincode+" "+item.name+" "+item.dose1;
 						 showNotifications("Many Slots",msgText,item.centerId,item.date);
 					 }
-                                         if(item.price==null){
+                                         if(item.price==null && item.age==18){
                                                var msgText = item.pincode+" "+item.name+" "+item.dose1;   
                                                showNotifications("Free Vaccine",msgText,item.centerId,item.date);
                                      }
