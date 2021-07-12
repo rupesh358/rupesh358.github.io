@@ -26,6 +26,10 @@
   <option value="18">18</option>
   <option value="45">45</option>
 </select>
+<select ng-model="dose" name="Dose" id="carsa">
+  <option value="available_capacity_dose1">Dose 1</option>
+  <option value="available_capacity_dose2">Dose 2</option>
+</select>
 
 <button ng-click="refresh()">Search</button> <br>  <br>
 Number of Slot <input type="text" ng-model="alertSlot"></input>
@@ -41,7 +45,7 @@ Require Date<input type="text" ng-model="alertDate"></input>
 				<th><a ng-click="orderByField='date'; reverseSort = !reverseSort">Date</a></th>
 				<th><a ng-click="orderByField='pincode'; reverseSort = !reverseSort">Pincode</a></th>
 				<th><a ng-click="orderByField='price'; reverseSort = !reverseSort">Price</a></th>
-				<th><a ng-click="orderByField='dose1'; reverseSort = !reverseSort">Dose 1</a></th>
+				<th><a ng-click="orderByField='dose1'; reverseSort = !reverseSort">Dose</a></th>
                 <th><a ng-click="orderByField='name'; reverseSort = !reverseSort">Center Name</a></th>
                 <th><a ng-click="orderByField='address'; reverseSort = !reverseSort">Address</a></a></th>
 
@@ -94,6 +98,7 @@ function showNotifications(title,message,vaccineId,date) {
     $scope.allData = [];
     $scope.alertDate = new Date().getDate();
     $scope.alertSlot = 10000;
+    $scope.dose='available_capacity_dose1';
 
     $scope.refresh = function() {
 		$scope.displyDate = new Date().toLocaleString("en-US", {timeZone: "Asia/Calcutta"});
@@ -135,7 +140,7 @@ var intervalId = window.setInterval(function(){
             var item = {};
             for (var j = 0; j < sessions.length; j++) {
                 var session = sessions[j];
-                if (session.available_capacity_dose1 > 0 && !$scope.hiddentCenter.includes(currentData.center_id+session.date)) {
+                if (session[$scope.dose] > 0 && !$scope.hiddentCenter.includes(currentData.center_id+session.date)) {
 					isAdd=true;
 					 item.age = session.min_age_limit;
                     item.vaccine = session.vaccine;
@@ -144,7 +149,7 @@ var intervalId = window.setInterval(function(){
                     if (currentData.vaccine_fees != null) {
                         item.price = currentData.vaccine_fees[0].fee;
                     }
-                    item.dose1 = session.available_capacity_dose1;
+                    item.dose1 = session[$scope.dose];
                     item.name = currentData.name;
                     item.address = currentData.address;
                     item.centerId =currentData.center_id;
