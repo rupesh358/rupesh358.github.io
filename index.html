@@ -1,0 +1,28 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>  
+<body>  
+<div ng-app="myApp" ng-controller="formCtrl">  
+  <form>  
+    Mobile Number: <input type="tel" ng-model="firstname" value="91"> <br> <br>
+    <input type="button" value="Open Whatsapp" ng-click="getUrl()">
+  </form>  
+</div>  
+<script>  
+var app = angular.module('myApp', []);  
+app.controller('formCtrl', function($scope) {  
+    $scope.firstname = "91";  
+    $scope.url=
+    $scope.msg="";
+    $scope.getUrl = function(){
+		 window.open("https://wa.me/"+$scope.firstname);
+		};
+
+	
+
+});  
+</script>  
+</body>  
+</html>   
+
+ 
